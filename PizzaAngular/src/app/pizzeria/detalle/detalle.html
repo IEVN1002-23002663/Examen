@@ -1,0 +1,97 @@
+
+<div class="min-h-screen bg-orange-50 p-6">
+
+  <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-3">
+      Detalle del pedido
+    </h1>
+
+    <p class="text-gray-500 mb-6">
+      Revisa las pizzas antes de finalizar la compra.
+    </p>
+
+    <div class="bg-orange-100 rounded-lg p-4 mb-6">
+      <p>
+        <strong>Cliente:</strong>
+        {{ pizzeria.cliente.nombre || 'Sin registrar' }}
+      </p>
+      <p>
+        <strong>Fecha:</strong>
+        {{ pizzeria.cliente.fecha }}
+      </p>
+    </div>
+
+    <div class="overflow-x-auto">
+
+      <table class="w-full text-left border-collapse">
+
+        <thead class="bg-gray-800 text-white">
+          <tr>
+            <th class="p-4">Tamaño</th>
+            <th class="p-4">Ingredientes</th>
+            <th class="p-4">Cantidad</th>
+            <th class="p-4">Subtotal</th>
+            <th class="p-4">Acción</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let pizza of pizzeria.pizzas; let i = index"
+              class="border-b">
+
+            <td class="p-4">{{ pizza.tamano }}</td>
+
+            <td class="p-4">
+              {{ pizza.ingredientes.join(', ') || 'Sin extras' }}
+            </td>
+
+            <td class="p-4">{{ pizza.cantidad }}</td>
+
+            <td class="p-4">${{ pizza.subtotal }}</td>
+
+            <td class="p-4">
+              <button type="button"
+                (click)="quitarPizza(i)"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg">
+                Quitar
+              </button>
+            </td>
+
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <p *ngIf="pizzeria.pizzas.length === 0"
+       class="text-center text-gray-500 py-10">
+      No hay pizzas agregadas.
+    </p>
+
+    <div class="mt-8 text-right">
+      <p class="text-2xl font-bold text-gray-800">
+        Total: ${{ total }}
+      </p>
+    </div>
+
+    <div class="flex flex-wrap justify-between gap-4 mt-8">
+
+      <button type="button" (click)="agregarOtra()"
+        class="bg-gray-600 text-white px-6 py-3 rounded-lg">
+        Agregar otra pizza
+      </button>
+
+      <button type="button"
+        (click)="terminarPedido()"
+        [disabled]="guardando || pizzeria.pizzas.length === 0"
+        class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg disabled:opacity-50">
+        {{ guardando ? 'Guardando...' : 'Terminar pedido' }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
